@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5.1)
-project(lab0 C)
+project(lab9 C)
 
 set(SRC src/main.c)
 

@@ -1,0 +1,54 @@
+image:
+    - Visual Studio 2017
+
+environment:
+    matrix:
+        - TASK: lab0
+        - TASK: lab1-0
+        - TASK: lab1-1
+        - TASK: lab2
+        - TASK: lab3-0
+        - TASK: lab3-1
+        - TASK: lab4
+        - TASK: lab5
+        - TASK: lab6
+        - TASK: lab7
+        - TASK: lab8-0
+        - TASK: lab8-1
+        - TASK: lab9
+
+install:
+    - cmd: choco install chocolatey-core.extension --ignore-dependencies
+    - cmd: choco install ninja --ignore-dependencies
+    - cmd: choco install cmake --ignore-dependencies
+    - cmd: choco install cppcheck --ignore-dependencies
+    - cmd: set PATH=%PATH%;C:\Program Files\Cppcheck
+
+before_build:
+    - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat" x86_amd64
+
+build_script:
+    - mkdir build
+    - cd build
+    - cmake -DCMAKE_BUILD_TYPE=Release ../%TASK% -GNinja -DCMAKE_C_COMPILER=clang-cl
+    - cmake --build .
+
+test_script:
+    - cmake -E env CTEST_OUTPUT_ON_FAILURE=1 ninja test
+
+after_test:
+    - ninja check
+
+on_failure:
+    - ps: "[char[]](Get-Content in.txt -Encoding byte -TotalCount 256)-join ''"
+    - ps: "[char[]](Get-Content out.txt -Encoding byte -TotalCount 256)-join ''"
+
+on_finish:
+    - ninja clean
+    - cmake -DCMAKE_BUILD_TYPE=Release ../%TASK% -GNinja -DCMAKE_C_COMPILER=clang-cl -DENABLE_ASAN=true
+    - cmake --build .
+    - "%TASK%.exe < in.txt > out.txt"
+    - ninja clean
+    - cmake -DCMAKE_BUILD_TYPE=Release ../%TASK% -GNinja -DCMAKE_C_COMPILER=clang-cl -DENABLE_USAN=true
+    - cmake --build .
+    - "%TASK%.exe < in.txt > out.txt"

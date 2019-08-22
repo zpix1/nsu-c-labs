@@ -19,12 +19,12 @@ stages:
     - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DUNLIMITED=OFF ../$LAB
     - "ninja test || STATUS=2"
     - "(($STATUS == 2)) && head -c 256 in.txt && head -c 256 out.txt"
-    - "rm -rf *"
+    - "mv status.svg ../ && rm -rf * && mv ../status.svg ."
     - cmake ../$LAB -GNinja -DCMAKE_C_COMPILER=clang -DENABLE_ASAN=true -DUNLIMITED=ON
     - ninja
     - "ninja test || STATUS=3"
     - "(($STATUS == 3)) && head -c 256 in.txt && head -c 256 out.txt"
-    - "rm -rf *"
+    - "mv status.svg ../ && rm -rf * && mv ../status.svg ."
     - cmake ../$LAB -GNinja -DCMAKE_C_COMPILER=clang -DENABLE_USAN=true -DUNLIMITED=ON
     - ninja
     - "ninja test || STATUS=4"

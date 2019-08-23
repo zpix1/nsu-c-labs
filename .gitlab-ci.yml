@@ -10,7 +10,7 @@ stages:
     - cd "build_$LAB"
   script:
     - "export CTEST_OUTPUT_ON_FAILURE=1"
-    - curl -k https://img.shields.io/badge/status-failed-blue.svg > status.svg
+    - cp ../.static/img.shields.io/badge/status-failed-blue.svg status.svg
     - "STATUS=0"
     - cmake -GNinja -DCMAKE_BUILD_TYPE=Release -DUNLIMITED=ON ../$LAB
     - ninja
@@ -30,7 +30,7 @@ stages:
     - "ninja test || STATUS=4"
     - "(($STATUS == 4)) && head -c 256 in.txt && head -c 256 out.txt"
     - "ninja check || STATUS=5"
-    - "(($STATUS == 0)) && curl -k https://img.shields.io/badge/status-passed-green.svg > status.svg"
+    - "(($STATUS == 0)) && cp ../.static/img.shields.io/badge/status-passed-green.svg status.svg"
     - exit $STATUS
   artifacts:
     paths:

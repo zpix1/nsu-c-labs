@@ -52,7 +52,7 @@ char* convert_from_base1_to_base2(char *base1_str, int base1, int base2);
 
 int main() {
     int base1, base2;
-    if (scanf("%d %d", &base1, &base2) != 1) {
+    if (!scanf("%d %d", &base1, &base2)) {
         error_exit("Scanf error");
     };
 
@@ -70,7 +70,7 @@ int main() {
     char base1_str[MAX_INPUT_LENGTH];
 
     // I am still not sure about safety of this operation
-    if (scanf("%60s", base1_str) != 1) {
+    if (!scanf("%60s", base1_str)) {
         error_exit("Scanf error");
     };
     

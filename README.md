@@ -1,9 +1,40 @@
-# c_programming
-## How-to
-* fork repo
-* create branch 'labNumber' with task implementation
-* implement task in project template directory 'labNumber'
-* create merge request from branch 'labNumber' to master
-* assign a reviewer
-* ???????
-* PROFIT!!!
+# Лабы Ивана
+## Как добавить бэдж
+Идем в Settings - General - Badges - Expand
+
+Добавляем бэдж:
+
+1. Link: `https://gitlab.ccfit.nsu.ru/%{project_path}`
+
+2. Badge image URL: `https://gitlab.ccfit.nsu.ru/%{project_path}/-/jobs/artifacts/master/raw/build_lab0/status.svg?job=lab0`
+
+`lab0` во втором пункте заменяем на желаемую лабу
+
+## Scanf ошибки
+Компилятор тут настроен на нечеловеческую строгость, так что все scanf пишем так:
+
+```C
+if (!scanf(....)) {
+    // сообщить об ошибке
+    exit(1);
+}
+```
+
+или даже так (я не проверял, но может работать):
+```C
+int ec_scanf(const char *fmt, ...) {
+    int rc;
+
+    va_list args;
+    va_start(args, fmt);
+    rc = vscanf(fmt, args);
+    va_end(args);
+
+    if (!rc) {
+        perror("Scanf error");
+        exit(1);
+    }
+
+    return rc;
+}
+```

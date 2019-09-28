@@ -35,7 +35,7 @@ void* errorcheck_malloc(size_t size);
 
 // Try to scanf
 // Exit if a problem occured
-void errorcheck_scanf(const char *fmt, ...);
+// void errorcheck_scanf(const char *fmt, ...);
 
 // Main functions
 
@@ -62,7 +62,9 @@ char* convert_from_base1_to_base2(char *base1_str, int base1, int base2);
 
 int main() {
     int base1, base2;
-    errorcheck_scanf("%d %d", &base1, &base2);
+    if (scanf("%d %d", &base1, &base2) != 2) {
+        error_exit("Scanf error");
+    }
 
     // I think program should assert in these cases, but tests think otherwise
     if ((base1 < 2 || base1 > 16) || (base2 < 2 || base2 > 16)) {
@@ -77,7 +79,9 @@ int main() {
 
     char base1_str[MAX_INPUT_LENGTH];
 
-    errorcheck_scanf("%60s", base1_str);
+    if (scanf("%60s", base1_str) != 1) {
+        error_exit("Scanf error");
+    }
 
     char* base2_str = convert_from_base1_to_base2(base1_str, base1, base2);
 
@@ -119,18 +123,18 @@ void* errorcheck_malloc(size_t size) {
     return result;
 }
 
-void errorcheck_scanf(const char *fmt, ...) {
-    int rc;
+// void errorcheck_scanf(const char *fmt, ...) {
+//     int rc;
 
-    va_list args;
-    va_start(args, fmt);
-    rc = vscanf(fmt, args);
-    va_end(args);
+//     va_list args;
+//     va_start(args, fmt);
+//     rc = vscanf(fmt, args);
+//     va_end(args);
 
-    if (!rc) {
-        error_exit("Scanf error");
-    }
-}
+//     if (!rc) {
+//         error_exit("Scanf error");
+//     }
+// }
 
 void reverse(char* s, size_t n) {
     for (size_t i = 0; i < n / 2; i++) {

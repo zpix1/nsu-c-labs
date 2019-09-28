@@ -77,7 +77,6 @@ int main() {
 
     char base1_str[MAX_INPUT_LENGTH];
 
-    // I am still not sure about safety of this operation
     errorcheck_scanf("%60s", base1_str);
 
     char* base2_str = convert_from_base1_to_base2(base1_str, base1, base2);
@@ -89,7 +88,7 @@ int main() {
     return 0;
 }
 
-// Using long long is ok, becouse 
+// Using long long is ok, because 
 // FFFFFFFFFFFFF in 10ns is
 // 4 503 599 627 370 495
 // But long long max value is

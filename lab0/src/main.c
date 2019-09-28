@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <ctype.h>
 #include <math.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,13 +22,22 @@
 #endif
 
 // Utility functions
+
 // int max(int a, int b);
 void error_exit(char* error_message);
+
 // Reverse given string of size n
 void reverse(char* s, size_t n);
+
 // Try to allocate size bytes of heap memory
 // Exit if a problem occured
 void* errorcheck_malloc(size_t size);
+
+// Try to scanf
+// Exit if a problem occured
+void errorcheck_scanf(const char *fmt, ...);
+
+// Main functions
 
 // Convert given char to int in given base
 // Exit printing bad input if char is not in this base system range
@@ -52,9 +62,7 @@ char* convert_from_base1_to_base2(char *base1_str, int base1, int base2);
 
 int main() {
     int base1, base2;
-    if (!scanf("%d %d", &base1, &base2)) {
-        error_exit("Scanf error");
-    };
+    errorcheck_scanf("%d %d", &base1, &base2);
 
     // I think program should assert in these cases, but tests think otherwise
     if ((base1 < 2 || base1 > 16) || (base2 < 2 || base2 > 16)) {
@@ -70,10 +78,8 @@ int main() {
     char base1_str[MAX_INPUT_LENGTH];
 
     // I am still not sure about safety of this operation
-    if (!scanf("%60s", base1_str)) {
-        error_exit("Scanf error");
-    };
-    
+    errorcheck_scanf("%60s", base1_str);
+
     char* base2_str = convert_from_base1_to_base2(base1_str, base1, base2);
 
     printf("%s\n", base2_str);
@@ -112,6 +118,19 @@ void* errorcheck_malloc(size_t size) {
     }
 
     return result;
+}
+
+void errorcheck_scanf(const char *fmt, ...) {
+    int rc;
+
+    va_list args;
+    va_start(args, fmt);
+    rc = vscanf(fmt, args);
+    va_end(args);
+
+    if (!rc) {
+        error_exit("Scanf error");
+    }
 }
 
 void reverse(char* s, size_t n) {

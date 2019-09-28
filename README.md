@@ -22,6 +22,10 @@ if (!scanf(....)) {
 
 или даже так (я не проверял, но может работать):
 ```c
+// В начале
+#include<stdarg.h>
+
+// Функция
 int ec_scanf(const char *fmt, ...) {
     int rc;
 

@@ -23,7 +23,6 @@
 
 // Utility functions
 
-// int max(int a, int b);
 void error_exit(char* error_message);
 
 // Reverse given string of size n
@@ -32,10 +31,6 @@ void reverse(char* s, size_t n);
 // Try to allocate size bytes of heap memory
 // Exit if a problem occured
 void* errorcheck_malloc(size_t size);
-
-// Try to scanf
-// Exit if a problem occured
-// void errorcheck_scanf(const char *fmt, ...);
 
 // Main functions
 
@@ -58,6 +53,12 @@ long long from_base_to_10(char* s, int base, char* delimiter_pos);
 
 // Convert given string from base1 to base2
 // Uses malloc; FREE IT after use;
+// Converts using 10ns 
+// Uses long long for it and it is ok, because 
+// FFFFFFFFFFFFF (maximum input) in 10ns is
+// 4 503 599 627 370 495
+// But long long max value is
+// 9 223 372 036 854 775 807
 char* convert_from_base1_to_base2(char *base1_str, int base1, int base2);
 
 int main() {
@@ -92,22 +93,6 @@ int main() {
     return 0;
 }
 
-// Using long long is ok, because 
-// FFFFFFFFFFFFF in 10ns is
-// 4 503 599 627 370 495
-// But long long max value is
-// 9 223 372 036 854 775 807
-// Double mantissa is not enough but I dont care
-// It is 1.0000000000000002
-// Whilst 0.FFFFFFFFFFFF is 
-// 0.999999999999996447286321199499070644378662109375
-// It still works
-
-
-// int max(int a, int b) {
-//     return a > b ? a : b;
-// }
-
 void error_exit(char* error_message) {
     printf("%s\n", error_message);
     exit(0);
@@ -123,20 +108,10 @@ void* errorcheck_malloc(size_t size) {
     return result;
 }
 
-// void errorcheck_scanf(const char *fmt, ...) {
-//     int rc;
-
-//     va_list args;
-//     va_start(args, fmt);
-//     rc = vscanf(fmt, args);
-//     va_end(args);
-
-//     if (!rc) {
-//         error_exit("Scanf error");
-//     }
-// }
-
 void reverse(char* s, size_t n) {
+    if (s == NULL) {
+        error_exit("Null pointer");
+    }
     for (size_t i = 0; i < n / 2; i++) {
         char t = s[i];
         s[i] = s[n - i - 1];

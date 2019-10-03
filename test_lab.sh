@@ -17,6 +17,21 @@ RESULT=0
 
 cd $1;
 
+# CPP Check
+echo "cppcheck"
+cppcheck --enable=warning,style,performance,portability,unusedFunction \
+    --std=c99 \
+    --verbose \
+    --error-exitcode=1 \
+    --language=c \
+    -DMAIN=main \
+    -I include \
+    include/*.h \
+    src/*.c \
+    test/*.c
+
+let "RESULT += $?"
+
 # My tests (compile_n_run)
 echo "compile_n_run tests:"
 

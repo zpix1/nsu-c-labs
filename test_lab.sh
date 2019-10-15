@@ -33,13 +33,23 @@ cppcheck --enable=warning,style,performance,portability,unusedFunction \
 let "RESULT += $?"
 
 # My tests (compile_n_run)
-echo "compile_n_run tests:"
-
-for test_file in $DEFAULT_CNR_TESTS_DIR/*.test_file 
-do
-    $COMPILE_N_RUN src/main.c -t $test_file;
-    let "RESULT += $?"
-done;
+echo "gcc tests:"
+gcc -Werror \
+    -Wall \
+    -Wextra \
+    -Waddress \
+    -Warray-bounds \
+    -Wbuiltin-macro-redefined \
+    -Wswitch \
+    -Wunreachable-code \
+    -pedantic \
+    -pedantic-errors src/main.c
+let "RESULT += $?"
+# for test_file in $DEFAULT_CNR_TESTS_DIR/*.test_file 
+# do
+#     $COMPILE_N_RUN src/main.c -t $test_file;
+#     let "RESULT += $?"
+# done;
 
 # Wine testing (Petrov's tester)
 echo "Wine tests:"

@@ -12,7 +12,8 @@ const char* OPERATIONS_LIST[OP_COUNT] = {
     "/",
     "sin",
     "cos",
-    "factorial"
+    "!",
+    "^"
 };
 
 enum OperationArity get_operation_arity(enum OperationType operation_type) {
@@ -21,12 +22,26 @@ enum OperationArity get_operation_arity(enum OperationType operation_type) {
         case Minus:
         case Multiply:
         case Divide:
+        case Pow:
             return Binary;
         default:
             return Unary;
     }
 }
 
+enum OperationAssociativity get_operation_associativity(enum OperationType operation_type) {
+    switch (operation_type) {
+        case Plus:
+        case Minus:
+        case Multiply:
+        case Divide:
+            return Left;
+        case Pow:
+        case Factorial:
+        default:
+            return Right;
+    }
+}
 
 // Should be changed to: 1. Binary search
 //                       2. Search tree?
@@ -60,7 +75,8 @@ int get_operation_priority(enum OperationType operation_type) {
     }
 }
 
-double run_unary_operation(enum OperationType operation_type, double a) {
+double run_unary_operation(enum OperationType operation_type, double a, enum ErrorCode* error_code) {
+    *error_code = Success;
     switch (operation_type) {
         case Sin:
             return sin(a);
@@ -77,7 +93,7 @@ double run_unary_operation(enum OperationType operation_type, double a) {
     }
 }
 
-double run_binary_operation(enum OperationType operation_type, double a, double b) {
+double run_binary_operation(enum OperationType operation_type, double a, double b, enum ErrorCode* error_code) {
     switch (operation_type) {
         case Plus:
             return a+b;
@@ -87,9 +103,14 @@ double run_binary_operation(enum OperationType operation_type, double a, double 
             return a*b;
         case Divide: {
             if (fabs(b) < 0.00001) {
+                *error_code = ZeroDivisionError;
                 return INFINITY;
             }
             return a/b;
+        }
+        case Pow: {
+            double ans = pow(a, b);
+            return ans;
         }
         default:
             return -1.0;

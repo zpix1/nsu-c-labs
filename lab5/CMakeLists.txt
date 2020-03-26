@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5.1)
 project(lab5 C)
 
-set(SRC src/main.c)
+set(SRC src/pq.c src/coder.c src/packer.c src/bitreader.c src/bitwriter.c src/do_tester.c)
 
 add_executable(${PROJECT_NAME} ${SRC})
 

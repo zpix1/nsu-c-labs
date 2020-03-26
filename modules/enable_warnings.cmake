@@ -4,6 +4,7 @@ if("${CMAKE_C_COMPILER_ID}" STREQUAL "MSVC")
 			/WX)
 else ()
     target_compile_options(${PROJECT_NAME} PRIVATE
+            -D_DEFAULT_SOURCE
             -Werror
             -Wall
             -Wextra
